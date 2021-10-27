@@ -1,0 +1,20 @@
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+canvas {
+  display: block;
+  position: relative;
+  max-width: 500px !important;
+  height: auto !important;
+}
+
+#sketch {
+  min-height: 100vh; /*vertical center*/
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  position: relative;
+  flex-direction: column;
+}
