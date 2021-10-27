@@ -34,6 +34,15 @@ function setup() {
     }
   }
 
+  if (squares[0][6].col == squares[7][0].col) {
+    console.log(squares[0][6].col, squares[7][0].col);
+    let filtColors = colors.filter(
+      (item) => item !== squares[7][0].col.replace("#", "")
+    );
+    console.log(filtColors);
+    squares[0][6].col = "#" + random(filtColors);
+  }
+
   for (let i = 0; i < colors.length; i++) {
     let optionTemp = new optionSquare(i);
     if (
@@ -45,7 +54,7 @@ function setup() {
     optionSquares.push(optionTemp);
   }
 
-  playerSquares = [squares[0][6]];
+  squares[0][6].isPlayerSquare = true;
 }
 
 function draw() {
@@ -53,12 +62,18 @@ function draw() {
 
   for (i = 0; i < numColumns; i++) {
     for (j = 0; j < numRows; j++) {
-      squares[i][j].show();
+      if (!squares[i][j].isPlayerSquare) {
+        squares[i][j].show();
+      }
     }
   }
 
-  for (let i = 0; i < playerSquares.length; i++) {
-    playerSquares[i].show();
+  for (i = 0; i < numColumns; i++) {
+    for (j = 0; j < numRows; j++) {
+      if (squares[i][j].isPlayerSquare) {
+        squares[i][j].show();
+      }
+    }
   }
 
   for (let i = 0; i < optionSquares.length; i++) {
@@ -66,10 +81,45 @@ function draw() {
   }
 }
 
+function addNeighbors(x, y, col) {
+  for (let i = -1; i < 2; i += 2) {
+    for (let j = -1; j < 2; j += 2) {
+      if (
+        typeof squares[x - i] !== "undefined" &&
+        typeof squares[x - i][y - j] !== "undefined"
+      ) {
+        console.log(squares[x - i][y - j].col);
+        if (squares[x - i][y - j].col == col) {
+          squares[x - i][y - j].isPlayerSquare = true;
+          console.log(squares[i][j]);
+        }
+      }
+    }
+  }
+}
+
+function optionClicked(col) {
+  for (i = 0; i < numColumns; i++) {
+    for (j = 0; j < numRows; j++) {
+      if (squares[i][j].isPlayerSquare) {
+        addNeighbors(i, j, col);
+      }
+    }
+  }
+}
+
 function eventMouse() {
   for (let i = 0; i < optionSquares.length; i++) {
     if (optionSquares[i].mouseInside()) {
-      optionSquares[i].clickable = false;
+      if (optionSquares[i].clickable) {
+        optionClicked(optionSquares[i].col);
+      }
+    }
+  }
+
+  for (i = 0; i < numColumns; i++) {
+    for (j = 0; j < numRows; j++) {
+      squares[i][j].show();
     }
   }
 }
@@ -182,7 +232,7 @@ class playSquare {
     this.col = "#" + random(colors);
     this.width = squareWidth;
     this.height = squareHeight;
-    this.gray = false;
+    this.isPlayerSquare = false;
   }
 
   resetPos() {
@@ -210,5 +260,14 @@ class playSquare {
     rect(this.realPos.x, this.realPos.y, this.width + 0.5, this.height + 0.5);
 
     // rect(this.realPos.x, this.realPos.y, 20);
+  }
+
+  mouseInside() {
+    return (
+      mouseX >= this.pos.x - this.width / 2 &&
+      mouseX < this.pos.x + this.width / 2 &&
+      mouseY >= this.pos.y - this.height / 2 &&
+      mouseY < this.pos.y + this.height / 2
+    );
   }
 }
