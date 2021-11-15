@@ -26,16 +26,12 @@ function setup() {
     squareWidth = (gridWidth - padding) / numColumns;
     squareHeight = (gridHeight - padding) / numRows;
 
-    for (i = 0; i < numColumns; i++) {
+    console.log(gridWidth, gridHeight, squareWidth, squareHeight);
+
+    for (let i = 0; i < numColumns; i++) {
         squares[i] = new Array(numRows);
         for (j = 0; j < numRows; j++) {
-            let theseColors = shuffle(colors);
-            let thisColor = theseColors[0];
-
-            while (!checkNeighbors(i, j, thisColor)) {
-                theseColors.shift();
-                thisColor = theseColors[0];
-            }
+            let thisColor = getRandomAvailable(i, j);
             let squareTemp = new playSquare(i, j, thisColor);
             squares[i][j] = squareTemp;
         }
@@ -69,6 +65,25 @@ function setup() {
         squares[0][5].col = thisColor;
         console.log("trapped");
     }
+    noLoop();
+}
+
+function transposeArray(array) {
+    const M = array.length;
+    const N = array[0].length;
+    let dest = new Array(N);
+
+    for (let i = 0; i < N; i++) {
+        dest[i] = new Array(M);
+    }
+
+    for (let i = 0; i < N; i++) {
+        for (let j = 0; j < M; j++) {
+            dest[i][j] = array[j][N - i - 1];
+        }
+    }
+
+    return dest;
 }
 
 // main draw loop, draws player squares after and separately so the are drawn overtop
@@ -95,6 +110,20 @@ function draw() {
     for (let i = 0; i < optionSquares.length; i++) {
         optionSquares[i].show();
     }
+
+    let colorArray = squares.map((row) => row.map((s) => s.col));
+
+    console.table(transposeArray(colorArray));
+}
+
+function getRandomAvailable(i, j) {
+    let neighborColors = getNeighborColors(i, j);
+
+    let theseColors = colors.filter((x) => !neighborColors.includes(x));
+
+    let thisColor = random(theseColors);
+
+    return thisColor;
 }
 
 function checkNeighbors(x, y, col) {
@@ -113,7 +142,23 @@ function checkNeighbors(x, y, col) {
     return true;
 }
 
-function getNeighborColors(x, y, col) {
+// function checkNeighbors(x, y, col) {
+//     for (let i = -1; i < 2; i++) {
+//         for (let j = -1; j < 2; j++) {
+//             if (Math.abs(i) !== Math.abs(j) || (i && j) == 0) {
+//                 if (squares[x - i] && squares[x - i][y - j]) {
+//                     if (squares[x - i][y - j].col == col) {
+//                         return false;
+//                     }
+//                 }
+//             }
+//         }
+//     }
+
+//     return true;
+// }
+
+function getNeighborColors(x, y) {
     let neighborColors = [];
     for (let i = -1; i < 2; i++) {
         for (let j = -1; j < 2; j++) {
@@ -124,6 +169,7 @@ function getNeighborColors(x, y, col) {
             }
         }
     }
+    return neighborColors;
 }
 
 // handle a mouse event and check if an option has been clicked
@@ -176,7 +222,7 @@ function addNeighbors(x, y, col) {
                         if (!squares[x - i][y - j].isPlayerSquare) {
                             squares[x - i][y - j].isPlayerSquare = true;
 
-                            addNeighbors(x - i, y - j, col);
+                            // addNeighbors(x - i, y - j, col);
                         }
                         // console.log(squares[x - i][y - j]);
                     }
