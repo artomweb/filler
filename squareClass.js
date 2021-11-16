@@ -5,29 +5,33 @@ class simpleSquare {
 }
 
 class boardSquare extends simpleSquare {
-    constructor(row, col, serverBoard, squareColour) {
+    constructor(row, col, serverBoard, squareColour, playerOwner) {
         super();
         this.boardPos = createVector(row, col);
         this.serverBoard = serverBoard;
         this.realPos = createVector(XOff + (col * squareWidth + squareWidth / 2), YOff + (row * squareHeight + squareHeight / 2));
         this.colour = squareColour;
         this.size = squareWidth;
-        this.isPlayerOne = false;
-        this.isPlayerTwo = false;
+        this.playerOwner = playerOwner;
     }
 
     show() {
         rectMode(CENTER);
         noStroke();
         fill(this.colour);
-        rect(this.realPos.x, this.realPos.y, this.size, this.size);
+        rect(this.realPos.x, this.realPos.y, this.size + 1, this.size + 1);
+    }
+
+    resetPos() {
+        this.realPos = createVector(XOff + (this.boardPos.y * squareWidth + squareWidth / 2), YOff + (this.boardPos.x * squareHeight + squareHeight / 2));
+        this.size = squareWidth;
     }
 }
 
 class optionSquare extends boardSquare {
     constructor(i) {
         super();
-        this.size = 160;
+        this.size = 200;
         this.realPos = createVector(this.size + 1 + i * 232, height - 200);
         this.colour = colours[i];
         this.clickable = true;

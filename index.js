@@ -65,7 +65,7 @@ function setup() {
         squares[0][5].col = thisColor;
         console.log("trapped");
     }
-    noLoop();
+    // noLoop();
 }
 
 function transposeArray(array) {
@@ -113,7 +113,7 @@ function draw() {
 
     let colorArray = squares.map((row) => row.map((s) => s.col));
 
-    console.table(transposeArray(colorArray));
+    // console.table(transposeArray(colorArray));
 }
 
 function getRandomAvailable(i, j) {
@@ -141,22 +141,6 @@ function checkNeighbors(x, y, col) {
 
     return true;
 }
-
-// function checkNeighbors(x, y, col) {
-//     for (let i = -1; i < 2; i++) {
-//         for (let j = -1; j < 2; j++) {
-//             if (Math.abs(i) !== Math.abs(j) || (i && j) == 0) {
-//                 if (squares[x - i] && squares[x - i][y - j]) {
-//                     if (squares[x - i][y - j].col == col) {
-//                         return false;
-//                     }
-//                 }
-//             }
-//         }
-//     }
-
-//     return true;
-// }
 
 function getNeighborColors(x, y) {
     let neighborColors = [];
@@ -211,7 +195,7 @@ function setOptions() {
     }
 }
 
-// recursively add new neighbours for a given square, checking against given color
+//  add new neighbours for a given square, checking against given color
 
 function addNeighbors(x, y, col) {
     for (let i = -1; i < 2; i++) {
