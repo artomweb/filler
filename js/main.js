@@ -81,7 +81,7 @@ socket.on("gameOver", (data) => {
     console.log(data);
     if (data.status == "WIN") {
         createMessage("", data.message, "alert-success", false);
-    } else if (data.status == "LOSE") {
+    } else if (data.status == "LOST") {
         createMessage("", data.message, "alert-danger", false);
     } else {
         createMessage("", data.message, "alert-info", false);
