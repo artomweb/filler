@@ -15,9 +15,8 @@ const colours = ["#F83D5C", "#AFDD6A", "#4DB3F6", "#6A4CA3", "#4A474A", "#F3D51E
 function setup() {
     cnv = createCanvas(1500, 1687.5);
 
-    cnv.mouseClicked(eventMouse);
-
     cnv.parent("sketch");
+    cnv.mouseClicked(eventMouse);
 
     let margin = 80;
 

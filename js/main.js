@@ -79,7 +79,13 @@ socket.on("gameUpdate", (data) => {
 
 socket.on("gameOver", (data) => {
     console.log(data);
-    createMessage("", data.message, "alert-info", false);
+    if (data.status == "WIN") {
+        createMessage("", data.message, "alert-success", false);
+    } else if (data.status == "LOSE") {
+        createMessage("", data.message, "alert-danger", false);
+    } else {
+        createMessage("", data.message, "alert-info", false);
+    }
     board = data.thisGame.board;
     gameStep();
 });
