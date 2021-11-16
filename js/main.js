@@ -79,7 +79,6 @@ socket.on("gameUpdate", (data) => {
 
 socket.on("gameOver", (data) => {
     console.log(data);
-    overlayMsg.style.display = "none";
     if (data.status == "WIN") {
         createMessage("", data.message, "alert-success", false);
     } else if (data.status == "LOST") {
@@ -89,6 +88,7 @@ socket.on("gameOver", (data) => {
     }
     board = data.thisGame.board;
     gameStep();
+    overlayMsg.style.display = "none";
 });
 
 function createMessage(name, message, type, timed = true) {
