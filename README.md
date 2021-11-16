@@ -2,6 +2,8 @@
 
 A multiplayer game based on GamePigeon's iMmessage game, filler
 
+![image](image1.jpg)
+
 How to play:
 
 - Start a game by clicking create a new game
