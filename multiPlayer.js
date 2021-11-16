@@ -60,6 +60,32 @@ function setup() {
         optionSquares.push(optionTemp);
     }
 
+    boardSquares[6][0].colour = boardSquares[0][6].colour;
+
+    boardSquares[1][7].colour = boardSquares[6][0].colour;
+
+    console.log(boardSquares[6][0].colour, boardSquares[0][6].colour, boardSquares[1][7].colour);
+
+    if (boardSquares[6][0].colour == boardSquares[0][6].colour && boardSquares[0][6].colour == boardSquares[1][7].colour) {
+        console.log("starting player stuck");
+
+        let filtColors = colours.filter((item) => item !== boardSquares[6][0].colour);
+
+        boardSquares[0][6].colour = getRandomAvailable(0, 6, filtColors);
+    }
+
+    // if (squares[5][0].col == squares[6][1].col && squares[6][1].col == squares[0][7].col) {
+    //     let theseColors = shuffle(colors);
+    //     let thisColor = theseColors[0];
+
+    //     while (!checkNeighbors(0, 5, thisColor)) {
+    //         theseColors.shift();
+    //         thisColor = theseColors[0];
+    //     }
+    //     squares[0][5].col = thisColor;
+    //     console.log("trapped");
+    // }
+
     noLoop();
 }
 

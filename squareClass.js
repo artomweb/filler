@@ -1,13 +1,14 @@
 class simpleSquare {
     mouseInside() {
-        return mouseX >= this.pos.x - this.size / 2 && mouseX < this.realPos.x + this.size / 2 && mouseY >= this.realPos.y - this.size / 2 && mouseY < this.realPos.y + this.size / 2;
+        return mouseX >= this.realPos.x - this.size / 2 && mouseX < this.realPos.x + this.size / 2 && mouseY >= this.realPos.y - this.size / 2 && mouseY < this.realPos.y + this.size / 2;
     }
 }
 
 class boardSquare extends simpleSquare {
-    constructor(row, col, squareColour) {
+    constructor(row, col, serverBoard, squareColour) {
         super();
         this.boardPos = createVector(row, col);
+        this.serverBoard = serverBoard;
         this.realPos = createVector(XOff + (col * squareWidth + squareWidth / 2), YOff + (row * squareHeight + squareHeight / 2));
         this.colour = squareColour;
         this.size = squareWidth;
@@ -19,18 +20,18 @@ class boardSquare extends simpleSquare {
         rectMode(CENTER);
         noStroke();
         fill(this.colour);
-        rect(this.realPos.x, this.realPos.y, this.size + 1, this.size + 1);
+        rect(this.realPos.x, this.realPos.y, this.size, this.size);
     }
 }
 
 class optionSquare extends boardSquare {
     constructor(i) {
         super();
-        this.realPos = createVector(85 + i * 125, height - 100);
+        this.size = 160;
+        this.realPos = createVector(this.size + 1 + i * 232, height - 200);
         this.colour = colours[i];
         this.clickable = true;
-        this.size = 85;
-        this.sizeSmall = 30;
+        this.sizeSmall = 56;
     }
 
     show() {
