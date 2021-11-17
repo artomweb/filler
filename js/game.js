@@ -92,15 +92,18 @@ function eventMouse() {
 }
 
 function popOut(player) {
-    // console.log(player);
+    console.log("pop out", player);
     let totalX = 0,
         totalY = 0;
     let total = 0;
+
+    let playerSquares = [];
     for (let i = 0; i < numRows; i++) {
         for (let j = 0; j < numColumns; j++) {
             if (board[i][j].playerOwner == player) {
                 totalX += board[i][j].realPos.x;
                 totalY += board[i][j].realPos.y;
+                playerSquares.push(board[i][j]);
                 total++;
             }
         }
