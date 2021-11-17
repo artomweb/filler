@@ -92,7 +92,6 @@ function eventMouse() {
 }
 
 function popOut(player) {
-    console.log("pop out", player);
     let totalX = 0,
         totalY = 0;
     let total = 0;
@@ -106,65 +105,52 @@ function popOut(player) {
             }
         }
     }
-    // playerboard[i].gray = true;
-
-    // playerboard[i].col = playerboard[0].col;
-
-    // console.log(totalX, totalY);
     let avgX = totalX / total;
     let avgY = totalY / total;
 
     let scalePoint = createVector(avgX, avgY);
 
-    // console.log(scalePoint);
-
     let limit = 50;
     let current = 0;
 
-    let scaleAmount = 1.004;
-    let delay = 0.2;
+    const scaleAmount = 1.004;
+    const delay = 0.2;
 
     let popIn = setInterval(() => {
-        for (let i = 0; i < numRows; i++) {
-            for (let j = 0; j < numColumns; j++) {
-                if (board[i][j].playerOwner == player) {
-                    board[i][j].realPos.sub(scalePoint).mult(scaleAmount).add(scalePoint);
-                    board[i][j].size *= scaleAmount;
-                }
-            }
-        }
-        // console.log("out");
+        scalePlayerSquares(player, scalePoint, scaleAmount);
         if (current >= limit) {
-            // console.log("CLEARED");
             clearInterval(popIn);
             current = 0;
             let popOut = setInterval(() => {
-                for (let i = 0; i < numRows; i++) {
-                    for (let j = 0; j < numColumns; j++) {
-                        if (board[i][j].playerOwner == player) {
-                            board[i][j].realPos
-                                .sub(scalePoint)
-                                .mult(1 / scaleAmount)
-                                .add(scalePoint);
-                            board[i][j].size *= 1 / scaleAmount;
-                        }
-                    }
-                }
-                // console.log("out");
+                scalePlayerSquares(player, scalePoint, 1 / scaleAmount);
                 if (current >= limit) {
-                    // console.log("CLEARED");
                     clearInterval(popOut);
-                    for (let i = 0; i < numRows; i++) {
-                        for (let j = 0; j < numColumns; j++) {
-                            if (board[i][j].playerOwner == player) {
-                                board[i][j].resetPos();
-                            }
-                        }
-                    }
+                    // clearPositions(player);
                 }
                 current++;
             }, delay);
         }
         current++;
     }, delay);
+}
+
+function clearPositions(player) {
+    for (let i = 0; i < numRows; i++) {
+        for (let j = 0; j < numColumns; j++) {
+            if (board[i][j].playerOwner == player) {
+                board[i][j].resetPos();
+            }
+        }
+    }
+}
+
+function scalePlayerSquares(player, scalePoint, SF) {
+    for (let i = 0; i < numRows; i++) {
+        for (let j = 0; j < numColumns; j++) {
+            if (board[i][j].playerOwner == player) {
+                board[i][j].realPos.sub(scalePoint).mult(SF).add(scalePoint);
+                board[i][j].size *= SF;
+            }
+        }
+    }
 }

@@ -69,8 +69,8 @@ socket.on("error", (data) => {
 socket.on("playerConnected", (data) => {
     console.log("playerConnected", data);
     let thisGame = data.thisGame;
-    currentPlayer = thisGame.curretnPlayer;
-    opponentID = data.client;
+    currentPlayer = thisGame.currentPlayer;
+    opponentID = thisGame.client;
     board = thisGame.board;
     createMessage("Yay!", data.message, "alert-info");
     overlayMsg.style.display = "none";
