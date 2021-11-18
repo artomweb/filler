@@ -78,6 +78,8 @@ function draw() {
     for (let i = 0; i < optionboard.length; i++) {
         optionboard[i].show();
     }
+    getBoundary();
+    noLoop();
 }
 
 function eventMouse() {
@@ -134,23 +136,28 @@ function popOut(player) {
     }, delay);
 }
 
-function clearPositions(player) {
-    for (let i = 0; i < numRows; i++) {
-        for (let j = 0; j < numColumns; j++) {
-            if (board[i][j].playerOwner == player) {
-                board[i][j].resetPos();
-            }
-        }
-    }
-}
+let squaresToCheck = [
+    { x: 0, y: 0 },
+    { x: 0, y: -1 },
+    { x: 1, y: 0 },
+    { x: 0, y: 1 },
+    { x: -1, y: 0 },
+];
 
-function scalePlayerSquares(player, scalePoint, SF) {
-    for (let i = 0; i < numRows; i++) {
-        for (let j = 0; j < numColumns; j++) {
-            if (board[i][j].playerOwner == player) {
-                board[i][j].realPos.sub(scalePoint).mult(SF).add(scalePoint);
-                board[i][j].size *= SF;
-            }
-        }
-    }
-}
+let sides = [];
+
+let compasPoints = [{ x: 0, y: 0 }];
+
+// function getDirNoPlayer(y, x) {}
+
+// function checkNeighborsClockwise(y, x){
+
+// }
+
+// function get
+
+// function getBoundary() {
+//     board[6][1].playerOwner = clientID;
+//     board[5][0].playerOwner = clientID;
+//     let currentBoundSquare = createVector(0, 6);
+// }

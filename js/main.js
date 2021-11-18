@@ -111,3 +111,7 @@ joinGameButton.addEventListener("click", (e) => {
     }, 300);
     socket.emit("joinGame", { gameID: gameIDInput.value, clientID });
 });
+
+// setTimeout(() => {
+//     createGameButton.click();
+// }, 500);
