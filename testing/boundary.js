@@ -27,6 +27,7 @@ function setup() {
         board[i] = new Array(numColumns);
         for (let j = 0; j < numColumns; j++) {
             board[i][j] = { x: j * cellWidth + cellWidth / 2, y: i * cellWidth + cellWidth / 2, val: 0, colour: colours[Math.floor(Math.random() * colours.length)] };
+            // board[i][j].original
         }
     }
 
@@ -126,17 +127,12 @@ function getCornersBy(corners, corner) {
         .sort((a, b) => a[corner.axis] - b[corner.axis]);
 }
 
-let t = 0;
-
-let drawnPoints = [];
-
-let lineDrawn = false;
-
-let startFade = false;
-
-let alpha = 0;
-let alphaChange = 8;
 const colours = ["#F83D5C", "#AFDD6A", "#4DB3F6", "#6A4CA3", "#4A474A", "#F3D51E"];
+
+let t = 0;
+let change = 0.02;
+let c = change;
+let showBorder = true;
 
 function draw() {
     background(220);
@@ -153,30 +149,30 @@ function draw() {
         }
     }
 
-    if (alpha < 0) {
-        startFade = false;
-        alpha = 0;
-        alphaChange = 8;
-    }
-    if (alpha > 255) alphaChange = -8;
+    if (showBorder) {
+        if (t < 0) c = change;
+        if (t > 1) c = -change;
 
-    if (startFade) {
-        // console.log(alpha, alphaChange);
-        col.setAlpha(alpha);
-        stroke(col);
-        strokeWeight(5);
+        let white = color(255, 255, 255);
 
-        for (let i = 0; i < orderedCornerList.length - 1; i++) {
-            // console.log("line");
-            line(orderedCornerList[i].x, orderedCornerList[i].y, orderedCornerList[i + 1].x, orderedCornerList[i + 1].y);
+        for (let i = 0; i < numRows; i++) {
+            for (let j = 0; j < numColumns; j++) {
+                if (board[i][j].val == 1) {
+                    let thisCol = color(board[i][j].colour);
+                    let col = lerpColor(thisCol, lerpColor(thisCol, white, 0.3), t);
+                    fill(col);
+                    rect(board[i][j].x, board[i][j].y, cellWidth);
+                }
+            }
         }
-        alpha += alphaChange;
+
+        t += c;
     }
 }
 
-function showBorder() {
-    startFade = true;
-}
+// function showBorder() {
+//     startFade = true;
+// }
 
 function getCorners() {
     let corners = [];
