@@ -42,7 +42,7 @@ function setup() {
     board[4][3].val = 1;
     board[4][4].val = 1;
 
-    console.table(board);
+    // console.table(board);
 
     rectMode(CENTER);
 }
@@ -79,8 +79,8 @@ let squaresAround = [
 function hasOneValidNeighbour(i, j) {
     let neighbours = [];
     for (let s of squaresAround) {
-        if (board[i - s.y] && board[i - s.y][j - s.x] && board[i][j].value == 0) {
-            neighbours.push([s]);
+        if (board[i - s.y] && board[i - s.y][j - s.x] && board[i - s.y][j - s.x].val == 0) {
+            neighbours.push(s);
         }
     }
 
@@ -102,6 +102,7 @@ function draw() {
     fill("red");
     // circle(board[numRows - 1][0].x - cellWidth / 2, board[numRows - 1][0].y + cellWidth / 2, 20);
 
+    console.time("loop");
     for (let i = 0; i < numRows; i++) {
         for (let j = 0; j < numColumns; j++) {
             if (board[i][j].val == 1) {
@@ -128,13 +129,29 @@ function draw() {
                 }
 
                 if (!convexCorner) {
-                    let validNeighbour = hasOneValidNeighbour(i, j);
+                    if (!isNotValid(i, j - 1) && !isNotValid(i - 1, j) && isNotValid(i - 1, j - 1)) {
+                        fill("green");
+                        circle(board[i][j].x - cellWidth / 2, board[i][j].y - cellWidth / 2, 20);
+                    }
 
-                    if (validNeighbour) {
-                        fill();
+                    if (!isNotValid(i - 1, j) && !isNotValid(i, j + 1) && isNotValid(i - 1, j + 1)) {
+                        fill("aqua");
+                        circle(board[i][j].x + cellWidth / 2, board[i][j].y - cellWidth / 2, 20);
+                    }
+
+                    if (!isNotValid(i, j - 1) && !isNotValid(i + 1, j) && isNotValid(i + 1, j - 1)) {
+                        fill("cornsilk");
+                        circle(board[i][j].x - cellWidth / 2, board[i][j].y + cellWidth / 2, 20);
+                    }
+                    if (!isNotValid(i, j + 1) && !isNotValid(i + 1, j) && isNotValid(i + 1, j + 1)) {
+                        fill("gold");
+                        circle(board[i][j].x + cellWidth / 2, board[i][j].y + cellWidth / 2, 20);
                     }
                 }
             }
         }
     }
+
+    console.timeEnd("loop");
+    noLoop();
 }
