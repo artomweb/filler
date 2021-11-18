@@ -134,6 +134,10 @@ let lineDrawn = false;
 
 let alpha = 255;
 
+let showBorder = true;
+
+let lineSpeed = 800;
+
 const colours = ["#F83D5C", "#AFDD6A", "#4DB3F6", "#6A4CA3", "#4A474A", "#F3D51E"];
 
 function draw() {
@@ -151,55 +155,62 @@ function draw() {
         }
     }
 
-    if (lineDrawn) {
-        col.setAlpha(alpha);
-        stroke(col);
-        strokeWeight(5);
-
-        for (let i = 0; i < drawnPoints.length - 1; i += 2) {
-            // console.log("line");
-            line(drawnPoints[i].x, drawnPoints[i].y, drawnPoints[i + 1].x, drawnPoints[i + 1].y);
-        }
-
-        alpha -= 2;
-
-        return;
-    }
-
     // fill("black");
 
-    if (t > 1) {
-        t = 0;
-        drawnPoints.push(currentStartPoint, currentEndPoint);
-        currentLine++;
+    if (showBorder) {
+        if (lineDrawn) {
+            if (alpha < 0) {
+                showBorder = false;
+                lineDrawn = false;
+                alpha = 255;
+                drawnPoints = [];
+                t = 0;
+            }
+            col.setAlpha(alpha);
+            stroke(col);
+            strokeWeight(5);
 
-        if (currentLine > orderedCornerList.length - 2) {
-            // console.log("current line too high");
-            lineDrawn = true;
-            // drawnPoints = [];
-            currentLine = 0;
+            for (let i = 0; i < drawnPoints.length - 1; i += 2) {
+                // console.log("line");
+                line(drawnPoints[i].x, drawnPoints[i].y, drawnPoints[i + 1].x, drawnPoints[i + 1].y);
+            }
+
+            alpha -= 4;
+        } else {
+            if (t > 1) {
+                t = 0;
+                drawnPoints.push(currentStartPoint, currentEndPoint);
+                currentLine++;
+
+                if (currentLine > orderedCornerList.length - 2) {
+                    // console.log("current line too high");
+                    lineDrawn = true;
+                    //
+                    currentLine = 0;
+                }
+                currentStartPoint = orderedCornerList[currentLine];
+                currentEndPoint = orderedCornerList[currentLine + 1];
+            }
+
+            stroke("white");
+            strokeWeight(5);
+
+            for (let i = 0; i < drawnPoints.length - 1; i++) {
+                // console.log("line");
+                line(drawnPoints[i].x, drawnPoints[i].y, drawnPoints[i + 1].x, drawnPoints[i + 1].y);
+            }
+
+            // console.log(currentStartPoint, currentEndPoint);
+
+            line(currentStartPoint.x, currentStartPoint.y, linePointTwo.x, linePointTwo.y);
+
+            // circle(linePointTwo.x, linePointTwo.y, 20);
+
+            linePointTwo = p5.Vector.lerp(currentStartPoint, currentEndPoint, t);
+
+            t += 0.05 * (lineSpeed / currentStartPoint.dist(currentEndPoint));
         }
-        currentStartPoint = orderedCornerList[currentLine];
-        currentEndPoint = orderedCornerList[currentLine + 1];
     }
-
-    stroke("white");
-    strokeWeight(5);
-
-    for (let i = 0; i < drawnPoints.length - 1; i++) {
-        // console.log("line");
-        line(drawnPoints[i].x, drawnPoints[i].y, drawnPoints[i + 1].x, drawnPoints[i + 1].y);
-    }
-
-    // console.log(currentStartPoint, currentEndPoint);
-
-    line(currentStartPoint.x, currentStartPoint.y, linePointTwo.x, linePointTwo.y);
-
-    // circle(linePointTwo.x, linePointTwo.y, 20);
-
-    linePointTwo = p5.Vector.lerp(currentStartPoint, currentEndPoint, t);
-
-    t += 0.05 * (150 / currentStartPoint.dist(currentEndPoint));
 
     // console.log(t);
 
