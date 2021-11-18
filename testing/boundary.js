@@ -172,49 +172,6 @@ function draw() {
         }
         alpha += alphaChange;
     }
-
-    // // fill("black");
-
-    // if (t > 1) {
-    //     t = 0;
-    //     drawnPoints.push(currentStartPoint, currentEndPoint);
-    //     currentLine++;
-
-    //     if (currentLine > orderedCornerList.length - 2) {
-    //         // console.log("current line too high");
-    //         lineDrawn = true;
-    //         // drawnPoints = [];
-    //         currentLine = 0;
-    //     }
-    //     currentStartPoint = orderedCornerList[currentLine];
-    //     currentEndPoint = orderedCornerList[currentLine + 1];
-    // }
-
-    // stroke("white");
-    // strokeWeight(5);
-
-    // for (let i = 0; i < drawnPoints.length - 1; i++) {
-    //     // console.log("line");
-    //     line(drawnPoints[i].x, drawnPoints[i].y, drawnPoints[i + 1].x, drawnPoints[i + 1].y);
-    // }
-
-    // // console.log(currentStartPoint, currentEndPoint);
-
-    // line(currentStartPoint.x, currentStartPoint.y, linePointTwo.x, linePointTwo.y);
-
-    // // circle(linePointTwo.x, linePointTwo.y, 20);
-
-    // linePointTwo = p5.Vector.lerp(currentStartPoint, currentEndPoint, t);
-
-    // t += 0.05 * (150 / currentStartPoint.dist(currentEndPoint));
-
-    // console.log(t);
-
-    // console.log(currentEndPoint);
-
-    // currentLine++;
-    // console.log(orderedCornerList);
-    // noLoop();
 }
 
 function showBorder() {
