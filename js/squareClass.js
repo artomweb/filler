@@ -10,7 +10,8 @@ class boardSquare extends simpleSquare {
         this.boardPos = createVector(row, col);
         this.serverBoard = serverBoard;
         this.realPos = createVector(XOff + (col * squareWidth + squareWidth / 2), YOff + (row * squareHeight + squareHeight / 2));
-        this.colour = squareColour;
+        this.originalColour = color(squareColour);
+        this.colour = this.originalColour;
         this.size = squareWidth;
         this.playerOwner = playerOwner;
     }
@@ -28,12 +29,13 @@ class boardSquare extends simpleSquare {
     }
 }
 
-class optionSquare extends boardSquare {
+class optionSquare extends simpleSquare {
     constructor(i) {
         super();
         this.size = 200;
         this.realPos = createVector(this.size + 1 + i * 232, height - 200);
         this.colour = colours[i];
+        this.p5Colour = color(colours[i]);
         this.clickable = true;
         this.sizeSmall = 56;
     }

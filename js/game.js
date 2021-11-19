@@ -12,6 +12,8 @@ let squareWidth, squareHeight;
 
 const colours = ["#F83D5C", "#AFDD6A", "#4DB3F6", "#6A4CA3", "#4A474A", "#F3D51E"];
 
+let white;
+
 function setup() {
     cnv = createCanvas(1500, 1687.5);
 
@@ -28,6 +30,8 @@ function setup() {
 
     YOff = gridCenter.y;
     XOff = gridCenter.x;
+
+    white = color("white");
 }
 
 function boardInit() {
@@ -42,35 +46,48 @@ function boardInit() {
     // create the clickable options
     for (let i = 0; i < colours.length; i++) {
         let optionTemp = new optionSquare(i);
-        // console.log(optionTemp.colour);
-        if (optionTemp.colour == board[6][0].colour || optionTemp.colour == board[0][7].colour) {
+        console.log(board[6][0].colour.toString(), optionTemp.p5Colour.toString());
+        if (optionTemp.p5Colour.toString() === board[6][0].colour.toString() || optionTemp.p5Colour.toString() === board[0][7].colour.toString()) {
             optionTemp.clickable = false;
         }
         optionboard.push(optionTemp);
     }
 }
 
-function draw() {
-    background(220);
+let flashPlayerTiles = false;
+let t = 0;
+let change = 0.04;
+let c = change;
+let maxOpacity = 0.4;
 
+function draw() {
+    background(230);
     if (!board) return;
 
     for (i = 0; i < numRows; i++) {
         for (j = 0; j < numColumns; j++) {
-            // if (board[i][j].playerOwner != currentPlayer) {
-            board[i][j].show();
-            // console.log(board[i][j]);
-            // }
+            if (board[i][j].playerOwner != notCurrentPlayer) {
+                board[i][j].show();
+            }
         }
     }
 
     // console.log(currentPlayer);
 
+    if (flashPlayerTiles) {
+        if (t < 0) c = change;
+        if (t > 1) c = -change;
+        t += c;
+    }
+
     for (i = 0; i < numRows; i++) {
         for (j = 0; j < numColumns; j++) {
             if (board[i][j].playerOwner == notCurrentPlayer) {
                 board[i][j].show();
-                // console.log(board[i][j]);
+            } else if (flashPlayerTiles && board[i][j].playerOwner == clientID) {
+                let thisCol = board[i][j].originalColour;
+                board[i][j].colour = lerpColor(thisCol, lerpColor(thisCol, white, maxOpacity), t);
+                board[i][j].show();
             }
         }
     }
@@ -80,11 +97,22 @@ function draw() {
     }
 }
 
+function flashTiles(bool) {
+    if (bool) {
+        flashPlayerTiles = true;
+    } else {
+        flashPlayerTiles = false;
+        t = 0;
+        c = change;
+    }
+}
+
 function eventMouse() {
     for (let i = 0; i < optionboard.length; i++) {
         if (optionboard[i].mouseInside()) {
             if (optionboard[i].clickable && currentPlayer == clientID) {
                 // console.log(optionboard[i].colour);
+                flashTiles(false);
                 socket.emit("move", { chosenColour: optionboard[i].colour, gameID, clientID });
             }
         }

@@ -9,6 +9,7 @@ canvas {
     position: relative;
     max-width: 550px !important;
     height: auto !important;
+    box-shadow: 10px 20px 20px rgba(0, 0, 0, 0.25);
 }
 
 #sketch {

@@ -6,47 +6,53 @@ let gameIDInput = document.getElementById("gameIDInput");
 let overlayMsg = document.getElementById("overlayMsg");
 
 let gameID;
+
 let clientID;
+let opponentID;
+
 let currentPlayer;
 let notCurrentPlayer;
-let opponentID;
+
 let board;
 
-function setUpGame(dataBoard) {
-    board = dataBoard;
-    console.log("board", board);
+function setUpGame(data) {
+    board = data.board;
+    gameID = data.gameID;
+    console.log("board", data.board);
     boardInit();
 }
 
-function gameStep() {
+function gameStep(popT = true) {
     boardInit();
     if (currentPlayer == clientID) {
         overlayMsg.style.display = "none";
         notCurrentPlayer = opponentID;
-    } else {
+        flashTiles(true);
+    } else if (currentPlayer == opponentID) {
         overlayMsg.style.display = "block";
         overlayMsg.innerHTML = "waiting for other player to move...";
         notCurrentPlayer = clientID;
     }
-    popOut(notCurrentPlayer);
+    if (popT) {
+        popOut(notCurrentPlayer);
+    }
 }
 
 socket.on("joinedGame", (data) => {
     console.log("joinGame", data);
     createMessage("", "Joined game!", "alert-success");
-    gameID = data.gameID;
     currentPlayer = clientID;
     opponentID = data.host;
-    setUpGame(data.board);
-    gameStep();
+    setUpGame(data);
+    gameStep((popT = false));
 });
 
 socket.on("createdGameResponse", (data) => {
     console.log("created game", data);
     document.getElementById("gameLink").innerHTML = data.gameID;
     createMessage("", "Created game!", "alert-success");
-    gameID = data.gameID;
-    setUpGame(data.board);
+
+    setUpGame(data);
     overlayMsg.innerHTML = "waiting for player to join...";
     overlayMsg.style.display = "block";
 });
@@ -63,11 +69,13 @@ socket.on("error", (data) => {
 
 socket.on("playerConnected", (data) => {
     console.log("playerConnected", data);
-    currentPlayer = data.opponentID;
-    opponentID = data.opponentID;
+    let thisGame = data.thisGame;
+    currentPlayer = thisGame.currentPlayer;
+    opponentID = thisGame.client;
+    board = thisGame.board;
     createMessage("Yay!", data.message, "alert-info");
     overlayMsg.style.display = "none";
-    gameStep();
+    gameStep((popT = false));
 });
 
 socket.on("gameUpdate", (data) => {
@@ -79,6 +87,8 @@ socket.on("gameUpdate", (data) => {
 
 socket.on("gameOver", (data) => {
     console.log(data);
+    flashTiles(false);
+    overlayMsg.style.display = "none";
     if (data.status == "WIN") {
         createMessage("", data.message, "alert-success", false);
     } else if (data.status == "LOST") {
@@ -90,34 +100,6 @@ socket.on("gameOver", (data) => {
     gameStep();
     overlayMsg.style.display = "none";
 });
-
-function createMessage(name, message, type, timed = true) {
-    let alertsCont = document.getElementById("alerts");
-
-    if (alertsCont.childElementCount > 0) {
-        // let thisAlert = new bootstrap.Alert(alertsCont.firstChild);
-        // thisAlert.close();
-        alertsCont.firstChild.remove();
-    }
-
-    let wrapper = document.createElement("div");
-
-    wrapper.classList.add("alert", type, "alert-dismissible", "fade", "show");
-
-    wrapper.innerHTML = "<strong>" + name + "</strong> " + message + '<button type="button" class="btn-close"data-bs-dismiss="alert"></button>';
-
-    alertsCont.appendChild(wrapper);
-
-    if (timed) {
-        setTimeout(() => {
-            let thisAlert = new bootstrap.Alert(wrapper);
-            thisAlert.close();
-            // if (wrapper.isConnected) {
-            //     alertsCont.removeChild(wrapper);
-            // }
-        }, 4000);
-    }
-}
 
 createGameButton.addEventListener("click", (e) => {
     setTimeout(() => {
@@ -132,3 +114,7 @@ joinGameButton.addEventListener("click", (e) => {
     }, 300);
     socket.emit("joinGame", { gameID: gameIDInput.value, clientID });
 });
+
+// setTimeout(() => {
+//     createGameButton.click();
+// }, 500);
