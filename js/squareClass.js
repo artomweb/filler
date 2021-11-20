@@ -10,6 +10,7 @@ class boardSquare extends simpleSquare {
         this.boardPos = createVector(row, col);
         this.serverBoard = serverBoard;
         this.realPos = createVector(XOff + (col * squareWidth + squareWidth / 2), YOff + (row * squareHeight + squareHeight / 2));
+        this.originalPos = this.realPos;
         this.originalColour = color(squareColour);
         this.colour = this.originalColour;
         this.size = squareWidth;
@@ -24,7 +25,7 @@ class boardSquare extends simpleSquare {
     }
 
     resetPos() {
-        this.realPos = createVector(XOff + (this.boardPos.y * squareWidth + squareWidth / 2), YOff + (this.boardPos.x * squareHeight + squareHeight / 2));
+        this.realPos = this.originalPos;
         this.size = squareWidth;
     }
 }

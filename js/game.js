@@ -60,6 +60,13 @@ let change = 0.04;
 let c = change;
 let maxOpacity = 0.4;
 
+let popOutTrue = false;
+let popt = 0;
+let popChange = 0.04;
+let popC = popChange;
+let chosenScalePoint = false;
+let scalePoint;
+
 function draw() {
     background(230);
     if (!board) return;
@@ -73,6 +80,26 @@ function draw() {
     }
 
     // console.log(currentPlayer);
+
+    if (popOutTrue) {
+        popt += popC;
+        if (!chosenScalePoint) {
+            scalePoint = getPopOutScalePoint(clientID);
+            console.log(scalePoint);
+            chosenScalePoint = true;
+        }
+        if (popt > 1) popC = -popChange;
+        if (popt < 0) {
+            console.log("less than zero");
+            popOutTrue = false;
+            popt = 0;
+            popC = popChange;
+            chosenScalePoint = false;
+        }
+        let sf = popC < 0 ? 0.75 : 1.25;
+        console.log(sf);
+        scalePlayerSquares(clientID, scalePoint, sf, popt);
+    }
 
     if (flashPlayerTiles) {
         if (t < 0) c = change;
@@ -119,7 +146,7 @@ function eventMouse() {
     }
 }
 
-function popOut(player) {
+function getPopOutScalePoint(player) {
     let totalX = 0,
         totalY = 0;
     let total = 0;
@@ -127,8 +154,8 @@ function popOut(player) {
     for (let i = 0; i < numRows; i++) {
         for (let j = 0; j < numColumns; j++) {
             if (board[i][j].playerOwner == player) {
-                totalX += board[i][j].realPos.x;
-                totalY += board[i][j].realPos.y;
+                totalX += board[i][j].originalPos.x;
+                totalY += board[i][j].originalPos.y;
                 total++;
             }
         }
@@ -138,28 +165,11 @@ function popOut(player) {
 
     let scalePoint = createVector(avgX, avgY);
 
-    let limit = 50;
-    let current = 0;
+    return scalePoint;
+}
 
-    const scaleAmount = 1.004;
-    const delay = 0.2;
-
-    let popIn = setInterval(() => {
-        scalePlayerSquares(player, scalePoint, scaleAmount);
-        if (current >= limit) {
-            clearInterval(popIn);
-            current = 0;
-            let popOut = setInterval(() => {
-                scalePlayerSquares(player, scalePoint, 1 / scaleAmount);
-                if (current >= limit) {
-                    clearInterval(popOut);
-                    // clearPositions(player);
-                }
-                current++;
-            }, delay);
-        }
-        current++;
-    }, delay);
+function popOut(a) {
+    popOutTrue = true;
 }
 
 function clearPositions(player) {
@@ -172,12 +182,14 @@ function clearPositions(player) {
     }
 }
 
-function scalePlayerSquares(player, scalePoint, SF) {
+function scalePlayerSquares(player, scalePoint, SF, t) {
     for (let i = 0; i < numRows; i++) {
         for (let j = 0; j < numColumns; j++) {
             if (board[i][j].playerOwner == player) {
-                board[i][j].realPos.sub(scalePoint).mult(SF).add(scalePoint);
-                board[i][j].size *= SF;
+                let endPos = board[i][j].originalPos.sub(scalePoint).mult(SF).add(scalePoint);
+                board[i][j].realPos.lerp(endPos, t);
+                let size = lerp(squareWidth, squareWidth * SF, t);
+                board[i][j].size = size;
             }
         }
     }
