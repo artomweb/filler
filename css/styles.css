@@ -1,143 +1,157 @@
 html,
 body {
-    margin: 0;
-    padding: 0;
+  margin: 0;
+  padding: 0;
 }
 
 canvas {
-    display: block;
-    position: relative;
-    max-width: 550px !important;
-    height: auto !important;
-    box-shadow: 10px 20px 20px rgba(0, 0, 0, 0.25);
+  display: block;
+  position: relative;
+  max-width: 550px !important;
+  height: auto !important;
+  box-shadow: 10px 20px 20px rgba(0, 0, 0, 0.25);
 }
 
 #sketch {
-    min-height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: flex-start;
-    position: relative;
-    flex-direction: column;
+  /* min-height: 100vh; */
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  position: relative;
+  flex-direction: column;
 }
 
 @media all and (max-width: 565px) {
-    canvas {
-        max-width: 95% !important;
-    }
-    #mainCont {
-        width: 80% !important;
-        padding-top: 0.5%;
-    }
-    #alerts {
-        width: 50% !important;
-        /* top: 0 !important; */
-        padding-top: 3% !important;
-    }
-    #overlayMsg {
-        top: 30vw !important;
-        font-size: 20px !important;
-    }
+  canvas {
+    max-width: 95% !important;
+  }
+  #mainCont {
+    width: 80% !important;
+    padding-top: 0.5%;
+  }
+  #alerts {
+    width: 50% !important;
+    /* top: 0 !important; */
+    padding-top: 3% !important;
+  }
+  #overlayMsg {
+    top: 30vw !important;
+    font-size: 20px !important;
+  }
 }
 
 #mainCont {
-    width: 60%;
-    padding-top: 2%;
+  width: 60%;
+  padding-top: 2%;
 }
 
 #alerts {
-    position: fixed;
-    z-index: 1000;
-    padding: 20px 0;
-    right: 10px;
-    width: 30%;
-    /* opacity: 0.9; */
+  position: fixed;
+  z-index: 1000;
+  padding: 20px 0;
+  right: 10px;
+  width: 30%;
+  /* opacity: 0.9; */
 }
 
 .alert {
-    position: absolute;
-    width: 100%;
-    animation: fadeIn 1s;
-    -webkit-animation: fadeIn 1s;
-    -moz-animation: fadeIn 1s;
-    -o-animation: fadeIn 1s;
-    -ms-animation: fadeIn 1s;
+  position: absolute;
+  width: 100%;
+  animation: fadeIn 1s;
+  -webkit-animation: fadeIn 1s;
+  -moz-animation: fadeIn 1s;
+  -o-animation: fadeIn 1s;
+  -ms-animation: fadeIn 1s;
 }
 
 #overlayMsg {
-    /* position: fixed; */
-    position: absolute;
-    z-index: 1000;
-    /* width: 175px; */
-    text-align: center;
-    color: white;
-    padding: 10px;
-    border-radius: 5px;
-    background-color: rgba(0, 0, 0, 0.753);
-    top: 220px;
-    font-size: 28px;
-    display: none;
-    /* left: 50%;
+  /* position: fixed; */
+  position: absolute;
+  z-index: 1000;
+  /* width: 175px; */
+  text-align: center;
+  color: white;
+  padding: 10px;
+  border-radius: 5px;
+  background-color: rgba(0, 0, 0, 0.753);
+  top: 220px;
+  font-size: 28px;
+  display: none;
+  /* left: 50%;
     transform: translateX(-50%); */
 }
 
 .noSelect {
-    -webkit-user-select: none;
-    /* Chrome all / Safari all */
-    -moz-user-select: none;
-    /* Firefox all */
-    -ms-user-select: none;
-    /* IE 10+ */
-    user-select: none;
-    /* Likely future */
+  -webkit-user-select: none;
+  /* Chrome all / Safari all */
+  -moz-user-select: none;
+  /* Firefox all */
+  -ms-user-select: none;
+  /* IE 10+ */
+  user-select: none;
+  /* Likely future */
 }
 
 @keyframes fadeIn {
-    0% {
-        opacity: 0;
-    }
-    100% {
-        opacity: 1;
-    }
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
 }
 
 @-moz-keyframes fadeIn {
-    0% {
-        opacity: 0;
-    }
-    100% {
-        opacity: 1;
-    }
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
 }
 
 @-webkit-keyframes fadeIn {
-    0% {
-        opacity: 0;
-    }
-    100% {
-        opacity: 1;
-    }
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
 }
 
 @-o-keyframes fadeIn {
-    0% {
-        opacity: 0;
-    }
-    100% {
-        opacity: 1;
-    }
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
 }
 
 @-ms-keyframes fadeIn {
-    0% {
-        opacity: 0;
-    }
-    100% {
-        opacity: 1;
-    }
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
 }
-
 
 /* #gameIDInput {
     width: 60%;
 } */
+
+.rules {
+  max-width: 550px;
+}
+
+.pageContainer {
+  /* min-height: 100vh; */
+  display: flex;
+  align-items: center;
+  gap: 30px;
+  position: relative;
+  flex-direction: column;
+  padding-bottom: 50px;
+  height: calc(100% - 210px);
+}

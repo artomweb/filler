@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
+  <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <script src="https://cdn.jsdelivr.net/npm/p5@1.4.0/lib/p5.js"></script>
@@ -16,14 +15,14 @@
     <!-- Global site tag (gtag.js) - Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-CCF4CDDQQF"></script>
     <script>
-        window.dataLayer = window.dataLayer || [];
+      window.dataLayer = window.dataLayer || [];
 
-        function gtag() {
-            dataLayer.push(arguments);
-        }
-        gtag("js", new Date());
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag("js", new Date());
 
-        gtag("config", "G-CCF4CDDQQF");
+      gtag("config", "G-CCF4CDDQQF");
     </script>
 
     <!-- <script defer src="multiPlayer.js"></script> -->
@@ -34,36 +33,47 @@
     <script defer src="js/squareClass.js"></script>
     <script defer src="js/main.js"></script>
     <script defer src="js/game.js"></script>
-</head>
+  </head>
 
-<body>
+  <body>
     <div id="alerts"></div>
 
     <div class="d-flex p-2 flex-column">
-        <div class="container text-center" id="mainCont">
-            <div class="row justify-content-center align-items-center h-100">
-                <div class="col col-xs-1 col-sm-8 col-md-8 col-lg-8 col-xl-5">
-                    <div class="form-group" style="padding-top: 2%">
-                        <div class="form-floating mt-3">
-                            <input type="text" class="form-control" id="gameIDInput" placeholder="1" />
-                            <label for="gameIDInput">Game ID</label>
-                            <div class="col-auto">
-                                <button type="submit" class="btn btn-primary mt-3" id="joinGameButton">Enter Game ID</button>
-                            </div>
-                        </div>
-                    </div>
+      <div class="container text-center" id="mainCont">
+        <div class="row justify-content-center align-items-center h-100">
+          <div class="col col-xs-1 col-sm-8 col-md-8 col-lg-8 col-xl-5">
+            <div class="form-group" style="padding-top: 2%">
+              <div class="form-floating mt-3">
+                <input type="text" class="form-control" id="gameIDInput" placeholder="1" />
+                <label for="gameIDInput">Game ID</label>
+                <div class="col-auto">
+                  <button type="submit" class="btn btn-primary mt-3" id="joinGameButton">Enter Game ID</button>
                 </div>
+              </div>
             </div>
-            <h4 class="mt-3"><u>OR </u>create a new game:</h4>
-            <button type="button" class="btn btn-primary mt-3 btn-sm" id="createGameButton">Create New Game</button>
-            <h4 id="gameLink" class="mt-4 mb-3"></h4>
+          </div>
         </div>
-
+        <h4 class="mt-3"><u>OR </u>create a new game:</h4>
+        <button type="button" class="btn btn-primary mt-3 btn-sm" id="createGameButton">Create New Game</button>
+        <h4 id="gameLink" class="mt-4 mb-3"></h4>
+      </div>
+      <div class="pageContainer">
         <!-- <div id="settings"></div> -->
         <div id="sketch">
-            <div id="overlayMsg" class="noSelect"></div>
+          <div id="overlayMsg" class="noSelect"></div>
         </div>
+        <div class="rules">
+          <h1>How to play:</h1>
+          <ol>
+            <li>Start a game by clicking create a new game</li>
+            <li>Give the game id, given above the game to your friend, or open a new tab</li>
+            <li>Each player starts on the bottom left of their screen</li>
+            <li>Click on one of the colour options at the bottom of the game</li>
+            <li>All the neighbouring squares of your square that are the colour of the option you selected will be claimed</li>
+            <li>The game ends when all squares have been claimed, the player with the most squares claimed wins!</li>
+          </ol>
+        </div>
+      </div>
     </div>
-</body>
-
+  </body>
 </html>
